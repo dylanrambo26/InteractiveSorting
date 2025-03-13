@@ -16,6 +16,11 @@ public class GameController {
         this.gameService = gameService;
     }
 
+    @GetMapping("/")
+    public String getGameInfo() {
+        return "Game endpoint is working!";
+    }
+
     //Starting a New Game
     @PostMapping("/start")
     public GameState startNewGame(@RequestParam String algorithm){

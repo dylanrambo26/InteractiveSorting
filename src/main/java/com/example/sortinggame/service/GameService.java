@@ -6,6 +6,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.*;
 
+@Service
 public class GameService {
     private final Map<Integer, GameState> games = new HashMap<>();
     private int gameIdCounter = 1;

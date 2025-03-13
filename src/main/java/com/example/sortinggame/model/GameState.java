@@ -1,7 +1,9 @@
 package com.example.sortinggame.model;
 import com.example.sortinggame.service.GameService;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
+
 public class GameState {
 
     private final int gameId;
@@ -40,10 +42,6 @@ public class GameState {
     public boolean isSorted(){
         return isSorted;
     }
-
-    /*public int getLastSwappedIndex(){
-        return lastSwappedIndex;
-    }*/
 
     public boolean isNewPass(){
         return isNewPass;

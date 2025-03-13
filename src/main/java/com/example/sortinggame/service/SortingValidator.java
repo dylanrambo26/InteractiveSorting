@@ -1,7 +1,10 @@
 package com.example.sortinggame.service;
 import com.example.sortinggame.model.GameState;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
+
+@Component
 public class SortingValidator {
 
     public static boolean isValidSwap(GameState gameState,int pass, int index1, int index2){
