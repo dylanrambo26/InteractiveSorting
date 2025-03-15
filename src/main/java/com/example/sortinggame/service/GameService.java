@@ -26,19 +26,21 @@ public class GameService {
         boolean isValidSwap = SortingValidator.isValidSwap(gameState,swapRequest.getPass(), swapRequest.getIndex1(), swapRequest.getIndex2());
 
         if(isValidSwap){
-            List<Integer> array = new ArrayList<>(gameState.getArray());
-            System.out.println("Before swap: " + array);
-            Collections.swap(array, swapRequest.getIndex1(), swapRequest.getIndex2());
-            System.out.println("After swap: " + array);
+            System.out.println("Before swap: " + gameState.getArray());
+            Collections.swap(gameState.getArray(), swapRequest.getIndex1(), swapRequest.getIndex2());
+            System.out.println("After swap: " + gameState.getArray());
             gameState.incrementSwaps();
         }
         else{
-            //TODO remove later
             System.out.println("Not a Valid Swap");
         }
-
-        gameState.setSorted(isSorted(gameState.getArray()));
-        return new GameState(gameState.getGameId(), gameState.getAlgorithm(), gameState.getArray());
+        boolean isSorted = isSorted(gameState.getArray());
+        if(isSorted){
+            gameState.setMessage("List is Sorted. :)");
+        }
+        gameState.setSorted(isSorted);
+        //return new GameState(gameState.getGameId(), gameState.getAlgorithm(), gameState.getArray());
+        return gameState;
     }
 
     private List<Integer> generateShuffledArray(int size){
@@ -60,7 +62,9 @@ public class GameService {
     }
 
     public GameState getGameState(int gameId){
-        return games.get(gameId);
+        GameState gameState = games.get(gameId);
+        System.out.println(gameId + " is the gameID and array is" + gameState.getArray());
+        return gameState;
     }
 
     /*private void printList(List<Integer> list){

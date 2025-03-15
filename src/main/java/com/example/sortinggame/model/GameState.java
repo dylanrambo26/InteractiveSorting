@@ -3,6 +3,9 @@ import java.util.*;
 
 public class GameState {
 
+    private boolean isInvalidSwap;
+    private boolean isInvalidPass;
+    private String message;
     private final int gameId;
     private final String algorithm;
     private final List<Integer> array;
@@ -44,8 +47,19 @@ public class GameState {
         return isNewPass;
     }
 
+    public boolean isInvalidSwap(){
+        return isInvalidSwap;
+    }
+
+    public boolean isInvalidPass(){
+        return isInvalidPass;
+    }
     public int getCurrentPass(){
         return currentPass;
+    }
+
+    public String getMessage(){
+        return message;
     }
     //setters
     public void incrementSwaps() {
@@ -64,4 +78,7 @@ public class GameState {
     public void setCurrentPass(int currentPass){
         this.currentPass = currentPass;
     }
+    public void setInvalidSwap(boolean invalidSwap){this.isInvalidSwap = invalidSwap;}
+    public void setInvalidPass(boolean invalidPass){this.isInvalidPass = invalidPass;}
+    public void setMessage(String message){this.message = message;}
 }
