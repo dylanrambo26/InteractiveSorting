@@ -1,7 +1,4 @@
 package com.example.sortinggame.model;
-import com.example.sortinggame.service.GameService;
-import org.springframework.stereotype.Component;
-
 import java.util.*;
 
 public class GameState {

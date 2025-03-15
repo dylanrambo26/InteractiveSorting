@@ -26,13 +26,19 @@ public class GameService {
         boolean isValidSwap = SortingValidator.isValidSwap(gameState,swapRequest.getPass(), swapRequest.getIndex1(), swapRequest.getIndex2());
 
         if(isValidSwap){
-            List<Integer> array = gameState.getArray();
+            List<Integer> array = new ArrayList<>(gameState.getArray());
+            System.out.println("Before swap: " + array);
             Collections.swap(array, swapRequest.getIndex1(), swapRequest.getIndex2());
+            System.out.println("After swap: " + array);
             gameState.incrementSwaps();
+        }
+        else{
+            //TODO remove later
+            System.out.println("Not a Valid Swap");
         }
 
         gameState.setSorted(isSorted(gameState.getArray()));
-        return gameState;
+        return new GameState(gameState.getGameId(), gameState.getAlgorithm(), gameState.getArray());
     }
 
     private List<Integer> generateShuffledArray(int size){

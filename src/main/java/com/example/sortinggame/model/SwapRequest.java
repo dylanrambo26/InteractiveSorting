@@ -42,7 +42,7 @@ public class SwapRequest {
     public void setIndex1(int index1){
         this.index1 = index1;
     }
-    public void setIndex2(int index1){
+    public void setIndex2(int index2){
         this.index2 = index2;
     }
 }
