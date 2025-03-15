@@ -1,6 +1,7 @@
 package com.example.sortinggame.controller;
 
 import com.example.sortinggame.model.GameState;
+import com.example.sortinggame.model.StartRequest;
 import com.example.sortinggame.model.SwapRequest;
 import com.example.sortinggame.service.GameService;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +23,14 @@ public class GameController {
     }
 
     //Starting a New Game
-    @PostMapping("/start")
+    /*@PostMapping("/start")
     public GameState startNewGame(@RequestParam String algorithm){
         return gameService.startGame(algorithm);
+    }*/
+
+    @PostMapping("/start")
+    public GameState startNewGame(@RequestBody StartRequest request){
+        return gameService.startGame(request);
     }
 
     // Processing a User Swap of Elements

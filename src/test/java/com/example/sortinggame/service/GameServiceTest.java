@@ -1,6 +1,7 @@
 package com.example.sortinggame.service;
 
 import com.example.sortinggame.model.GameState;
+import com.example.sortinggame.model.StartRequest;
 import com.example.sortinggame.model.SwapRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ public class GameServiceTest {
     @BeforeEach
     void setUp(){
         gameService = new GameService();
-        gameState = gameService.startGame("bubble_sort");
+        gameState = gameService.startGame(new StartRequest("bubble_sort", 5));
     }
 
     //Test SwapRequests for the invalid tests

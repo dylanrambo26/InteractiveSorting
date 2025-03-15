@@ -24,6 +24,7 @@ public class GameState {
         this.array = array;
         this.swapCount = 0;
         this.isSorted = false;
+        this.message = "Select two indexes to get started";
     }
 
     //getters

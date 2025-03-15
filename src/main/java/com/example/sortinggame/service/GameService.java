@@ -1,5 +1,6 @@
 package com.example.sortinggame.service;
 import com.example.sortinggame.model.GameState;
+import com.example.sortinggame.model.StartRequest;
 import com.example.sortinggame.model.SwapRequest;
 import com.example.sortinggame.service.SortingValidator;
 import org.springframework.data.domain.Sort;
@@ -10,9 +11,9 @@ import java.util.*;
 public class GameService {
     private final Map<Integer, GameState> games = new HashMap<>();
     private int gameIdCounter = 1;
-    public GameState startGame(String algorithm){
-        List<Integer> array = generateShuffledArray(5);//TODO Make it so that user can choose size
-        GameState gameState = new GameState(gameIdCounter, algorithm, array);
+    public GameState startGame(StartRequest startRequest){
+        List<Integer> array = generateShuffledArray(startRequest.getArraySize());//TODO Make it so that user can choose size
+        GameState gameState = new GameState(gameIdCounter, startRequest.getAlgorithm(), array);
         games.put(gameIdCounter, gameState);
         return games.get(gameIdCounter++);
     }
