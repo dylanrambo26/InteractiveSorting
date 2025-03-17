@@ -17,7 +17,7 @@ public class GameController {
         this.gameService = gameService;
     }
 
-    @GetMapping("/")
+    /*@GetMapping("/")
     public String getGameInfo() {
         return "Game endpoint is working!";
     }
@@ -28,16 +28,22 @@ public class GameController {
         return gameService.startGame(algorithm);
     }*/
 
+    @CrossOrigin(origins = "http://localhost:63343") // Allow CORS from frontend's origin, testing in WebStorm, host on node.js later
     @PostMapping("/start")
     public GameState startNewGame(@RequestBody StartRequest request){
+        System.out.println("Reached");
         return gameService.startGame(request);
+
     }
 
     // Processing a User Swap of Elements
+    @CrossOrigin(origins = "http://localhost:63343") // Allow CORS from frontend's origin, testing in WebStorm
     @PostMapping("/swap")
     public GameState processSwap(@RequestBody SwapRequest request) {
+        System.out.println("Reached Swap");
         return gameService.processSwap(request);
     }
+
 
     // Check Game Status
     @GetMapping("/status/{gameId}")
