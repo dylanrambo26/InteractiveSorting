@@ -11,9 +11,9 @@ public class SortingValidator {
         switch (gameState.getAlgorithm().toLowerCase()){
             case "bubble_sort":
                 return isValidBubbleSortSwap(gameState,pass, index1, index2);
-            /*case "selection_sort":
-                return isValidSelectionSortSwap(array, index1, index2);
-            case "insertion_sort":
+            case "selection_sort":
+                return isValidSelectionSortSwap(gameState,pass, index1, index2);
+            /*case "insertion_sort":
                 return isValidInsertionSortSwap(array, index1, index2);*/
             //TODO Implement other sorting algorithms later
             default:
@@ -23,7 +23,6 @@ public class SortingValidator {
 
     private static boolean isValidBubbleSortSwap(GameState gameState,int pass, int index1, int index2){
         List<Integer> array = gameState.getArray();
-        //Check if indexes are adjacent
 
         int currentPass = gameState.getCurrentPass();
 
@@ -69,5 +68,51 @@ public class SortingValidator {
         return true;
     }
 
+    private static boolean isValidSelectionSortSwap(GameState gameState, int pass, int currentIndex, int minIndex){
+        List<Integer> array = gameState.getArray();
 
+        int currentPass = gameState.getCurrentPass();
+
+        if(gameState.isFirstSelectionSortSwap() && currentIndex != 0 && currentPass == 0){
+            gameState.setInvalidSwap(true);
+            gameState.setMessage("Current Index must be 0 during the first pass");
+            return false;
+        }
+        if(pass != currentPass){
+            gameState.setInvalidPass(true);
+            gameState.setMessage("Pass is not equal to the current pass.");
+            return false;
+        }
+        //Check if index1 is less than index2 to ensure a left to right movement
+        if(currentIndex > minIndex){
+            gameState.setInvalidSwap(true);
+            gameState.setMessage("Index 2 needs to be less than index 1 since insertion-sort sorts from left to right.");
+            return false;
+        }
+
+        int expectedMin = currentPass;
+        for(int i = currentPass + 1; i < array.size(); i++){
+            if(array.get(i) < array.get(expectedMin)){
+                expectedMin = i;
+            }
+        }
+
+        if(currentIndex != currentPass){
+            gameState.setInvalidSwap(true);
+            gameState.setMessage("The current index must be the same as the current pass.");
+            return false;
+        }
+
+        if(minIndex != expectedMin){
+            gameState.setInvalidSwap(true);
+            gameState.setMessage("Value at Min Index is not the minimum value inside the unsorted portion.");
+            return false;
+        }
+        gameState.setFirstSelectionSortSwap(false);
+        gameState.setInvalidPass(false);
+        gameState.setInvalidSwap(false);
+        gameState.setCurrentPass(currentPass + 1);
+        gameState.setMessage("Swap is Valid.");
+        return true;
+    }
 }
