@@ -17,7 +17,9 @@ public class GameState {
     private boolean isNewPass = true;
 
     private int currentPass = 0;
-    private boolean isFirstSelectionSortSwap = true;
+    private boolean isFirstSwap = true;
+
+    private int numInserts = 0;
 
     public GameState(int gameId, String algorithm, List<Integer> array){
         this.gameId = gameId;
@@ -63,8 +65,11 @@ public class GameState {
     public String getMessage(){
         return message;
     }
-    public boolean isFirstSelectionSortSwap(){
-        return isFirstSelectionSortSwap;
+    public boolean isFirstSwap(){
+        return isFirstSwap;
+    }
+    public int getNumInserts(){
+        return numInserts;
     }
     //setters
     public void incrementSwaps() {
@@ -86,7 +91,10 @@ public class GameState {
     public void setInvalidSwap(boolean invalidSwap){this.isInvalidSwap = invalidSwap;}
     public void setInvalidPass(boolean invalidPass){this.isInvalidPass = invalidPass;}
     public void setMessage(String message){this.message = message;}
-    public void setFirstSelectionSortSwap(boolean firstSelectionSortSwap){
-        this.isFirstSelectionSortSwap = firstSelectionSortSwap;
+    public void setFirstSwap(boolean firstSwap){
+        this.isFirstSwap = firstSwap;
+    }
+    public void setNumInserts(int numInserts){
+        this.numInserts = numInserts;
     }
 }
