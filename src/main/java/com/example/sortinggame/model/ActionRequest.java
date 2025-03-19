@@ -1,17 +1,17 @@
 package com.example.sortinggame.model;
 
-public class SwapRequest {
+public class ActionRequest {
 
     private int gameID;
     private int pass;
     private int index1;
     private int index2;
 
-    public SwapRequest(){
+    public ActionRequest(){
 
     }
     //Constructor
-    public SwapRequest(int gameID,int pass, int index1, int index2){
+    public ActionRequest(int gameID, int pass, int index1, int index2){
         this.gameID = gameID;
         this.pass = pass;
         this.index1 = index1;
