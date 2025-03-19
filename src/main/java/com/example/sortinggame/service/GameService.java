@@ -1,9 +1,7 @@
 package com.example.sortinggame.service;
 import com.example.sortinggame.model.GameState;
 import com.example.sortinggame.model.StartRequest;
-import com.example.sortinggame.model.SwapRequest;
-import com.example.sortinggame.service.SortingValidator;
-import org.springframework.data.domain.Sort;
+import com.example.sortinggame.model.ActionRequest;
 import org.springframework.stereotype.Service;
 import java.util.*;
 
@@ -18,18 +16,25 @@ public class GameService {
         return games.get(gameIdCounter++);
     }
 
-    public GameState processSwap(SwapRequest swapRequest){
-        GameState gameState = games.get(swapRequest.getGameID());
+    public GameState processSwap(ActionRequest actionRequest){
+        GameState gameState = games.get(actionRequest.getGameID());
         if (gameState == null){
             return null;
         }
 
-        boolean isValidSwap = SortingValidator.isValidSwap(gameState,swapRequest.getPass(), swapRequest.getIndex1(), swapRequest.getIndex2());
+        boolean isValidAction = SortingValidator.isValidSortParameters(gameState, actionRequest.getPass(), actionRequest.getIndex1(), actionRequest.getIndex2());
 
-        if(isValidSwap){
-            System.out.println("Before swap: " + gameState.getArray());
-            Collections.swap(gameState.getArray(), swapRequest.getIndex1(), swapRequest.getIndex2());
-            System.out.println("After swap: " + gameState.getArray());
+        if(isValidAction){
+            String algorithm = gameState.getAlgorithm();
+
+            System.out.println("Before action: " + gameState.getArray());
+            if(algorithm.equals("bubble_sort") || algorithm.equals("selection_sort")){
+                Collections.swap(gameState.getArray(), actionRequest.getIndex1(), actionRequest.getIndex2());
+            }
+            else if(algorithm.equals("insertion_sort")){
+                insertIntoSorted(gameState, actionRequest.getIndex1());
+            }
+            System.out.println("After action: " + gameState.getArray());
             gameState.incrementSwaps();
         }
         else{
@@ -51,6 +56,18 @@ public class GameService {
         }
         Collections.shuffle(shuffledArray);
         return shuffledArray;
+    }
+
+    //Insertion procedure for insertion sort
+    private void insertIntoSorted(GameState gameState, int i){
+        List<Integer> array = gameState.getArray();
+        int key = array.get(i);
+        int j = i - 1;
+        while (j >= 0 && array.get(j) > key) {
+            array.set(j + 1, array.get(j));
+            j = j - 1;
+        }
+        array.set(j + 1, key);
     }
 
     private boolean isSorted(List<Integer> arr){
