@@ -66,4 +66,31 @@ class SortingValidatorTest {
             Collections.swap(array, i, minIndex);
         }
     }
+
+    @Test
+    void testInsertionSortInitial(){
+        GameState gameState = new GameState(1,"insertion_sort",Arrays.asList(5,4,1,3,2));
+        assertFalse(SortingValidator.isValidSortParameters(gameState, 1,0,1));
+        assertFalse(SortingValidator.isValidSortParameters(gameState,0,1,2));
+        assertFalse(SortingValidator.isValidSortParameters(gameState,0,2,1));
+        assertFalse(SortingValidator.isValidSortParameters(gameState,0,0,2));
+    }
+
+    @Test
+    void testInsertionSortAlgorithm(){
+        List<Integer> array = Arrays.asList(5,4,1,3,2);
+        GameState gameState = new GameState(1,"insertion_sort",array);
+
+        int n = array.size();
+        for(int nextElement = 1; nextElement < n; nextElement++){
+            int key = array.get(nextElement);
+            int j = nextElement - 1;
+            assertTrue(SortingValidator.isValidSortParameters(gameState,j,j,nextElement));
+            while (j >= 0 && array.get(j) > key) {
+                array.set(j + 1, array.get(j));
+                j = j - 1;
+            }
+            array.set(j + 1, key);
+        }
+    }
 }
