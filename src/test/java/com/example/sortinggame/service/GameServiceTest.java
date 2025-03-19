@@ -40,7 +40,7 @@ public class GameServiceTest {
     void testApplyValidSwap(){
         ActionRequest actionRequest = new ActionRequest(1, 0,0,1);
         List<Integer> expectedArray = gameState.getArray();
-        GameState updatedGameState = gameService.processSwap(actionRequest);
+        GameState updatedGameState = gameService.processAction(actionRequest);
         Collections.swap(expectedArray, actionRequest.getIndex1(), actionRequest.getIndex2());
         assertEquals(expectedArray, updatedGameState.getArray());
     }
@@ -49,7 +49,7 @@ public class GameServiceTest {
     @ParameterizedTest
     @MethodSource("invalidSwapRequestStream")
     void testInvalidSwap(ActionRequest actionRequest){
-        GameState updatedGameState = gameService.processSwap(actionRequest);
+        GameState updatedGameState = gameService.processAction(actionRequest);
         assertEquals(gameState.getArray(), updatedGameState.getArray());
     }
 
@@ -63,7 +63,7 @@ public class GameServiceTest {
             for(int j = 0; j < gameState.getArray().size() - pass - 1; j++){
                 if(gameState.getArray().get(j) > gameState.getArray().get(j + 1)){
                     actionRequest = new ActionRequest(1, pass, j, j + 1);
-                    gameState = gameService.processSwap(actionRequest);
+                    gameState = gameService.processAction(actionRequest);
                     Collections.swap(expectedArray, j, j + 1);
                     assertEquals(gameState.getArray(), expectedArray);
                 }
@@ -88,7 +88,7 @@ public class GameServiceTest {
                 }
             }
             actionRequest = new ActionRequest(1,pass,pass,minIndex);
-            gameState = gameService.processSwap(actionRequest);
+            gameState = gameService.processAction(actionRequest);
             Collections.swap(expectedArray, pass , minIndex);
             assertEquals(gameState.getArray(), expectedArray);
         }
@@ -107,7 +107,7 @@ public class GameServiceTest {
             int key = gameState.getArray().get(nextElement);
             int j = nextElement - 1;
             actionRequest = new ActionRequest(1,j,j,nextElement);
-            gameState = gameService.processSwap(actionRequest);
+            gameState = gameService.processAction(actionRequest);
             while (j >= 0 && expectedArray.get(j) > key) {
                 expectedArray.set(j + 1, expectedArray.get(j));
                 j = j - 1;

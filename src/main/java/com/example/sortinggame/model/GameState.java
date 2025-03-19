@@ -9,6 +9,7 @@ public class GameState {
     private final int gameId;
     private final String algorithm;
     private final List<Integer> array;
+    private List<List<Integer>> mergeSortSubarrays;
     private int swapCount;
     private boolean isSorted;
 
@@ -20,6 +21,8 @@ public class GameState {
     private boolean isFirstSwap = true;
 
     private int numInserts = 0;
+
+    private int numPartitions;
 
     public GameState(int gameId, String algorithm, List<Integer> array){
         this.gameId = gameId;
@@ -71,6 +74,12 @@ public class GameState {
     public int getNumInserts(){
         return numInserts;
     }
+    public int getNumPartitions(){
+        return numPartitions;
+    }
+    public List<List<Integer>> getMergeSortSubarrays(){
+        return mergeSortSubarrays;
+    }
     //setters
     public void incrementSwaps() {
         this.swapCount++;
@@ -96,5 +105,8 @@ public class GameState {
     }
     public void setNumInserts(int numInserts){
         this.numInserts = numInserts;
+    }
+    public void setNumPartitions(int numPartitions){
+        this.numPartitions = numPartitions;
     }
 }

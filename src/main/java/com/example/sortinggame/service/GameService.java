@@ -2,6 +2,7 @@ package com.example.sortinggame.service;
 import com.example.sortinggame.model.GameState;
 import com.example.sortinggame.model.StartRequest;
 import com.example.sortinggame.model.ActionRequest;
+import org.springframework.boot.autoconfigure.amqp.AbstractRabbitListenerContainerFactoryConfigurer;
 import org.springframework.stereotype.Service;
 import java.util.*;
 
@@ -10,13 +11,18 @@ public class GameService {
     private final Map<Integer, GameState> games = new HashMap<>();
     private int gameIdCounter = 1;
     public GameState startGame(StartRequest startRequest){
-        List<Integer> array = generateShuffledArray(startRequest.getArraySize());//TODO Make it so that user can choose size
+        List<Integer> array = generateShuffledArray(startRequest.getArraySize());
         GameState gameState = new GameState(gameIdCounter, startRequest.getAlgorithm(), array);
+        //Merge sort partitioning before user actions
+        if(startRequest.getAlgorithm().equals("merge_sort")){
+            List<Integer> mergeArray = gameState.getArray();
+            mergeSortPartitions(mergeArray, gameState.getMergeSortSubarrays(), mergeArray.get(0), mergeArray.get(mergeArray.size() - 1), 1);
+        }
         games.put(gameIdCounter, gameState);
         return games.get(gameIdCounter++);
     }
 
-    public GameState processSwap(ActionRequest actionRequest){
+    public GameState processAction(ActionRequest actionRequest){
         GameState gameState = games.get(actionRequest.getGameID());
         if (gameState == null){
             return null;
@@ -70,6 +76,18 @@ public class GameService {
         array.set(j + 1, key);
     }
 
+    private void mergeSortPartitions(List<Integer> array, List<List<Integer>> subarrays, int left, int right, int divisionStep){
+        int numDivisions = divisionStep * 2;
+        if(left < right){
+            int midpoint = Math.floorDiv(left + right, 2);
+            List<Integer> leftArray = new ArrayList<>(array.subList(left,midpoint));
+            List<Integer> rightArray = new ArrayList<>(array.subList(midpoint + 1, right));
+            for(int i = 1; i < numDivisions; i++){
+                subarrays.set(i, rightArray);
+                subarrays.set(i - 1, leftArray);
+            }
+        }
+    }
     private boolean isSorted(List<Integer> arr){
         for(int i = 0; i < arr.size() - 1; i++){
             if(arr.get(i) > arr.get(i+1)){

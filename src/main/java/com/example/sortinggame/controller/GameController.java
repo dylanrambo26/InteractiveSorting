@@ -31,17 +31,15 @@ public class GameController {
     @CrossOrigin(origins = "http://localhost:63343") // Allow CORS from frontend's origin, testing in WebStorm, host on node.js later
     @PostMapping("/start")
     public GameState startNewGame(@RequestBody StartRequest request){
-        System.out.println("Reached");
         return gameService.startGame(request);
 
     }
 
     // Processing a User Swap of Elements
     @CrossOrigin(origins = "http://localhost:63343") // Allow CORS from frontend's origin, testing in WebStorm
-    @PostMapping("/swap")
-    public GameState processSwap(@RequestBody ActionRequest request) {
-        System.out.println("Reached Swap");
-        return gameService.processSwap(request);
+    @PostMapping("/action")
+    public GameState processAction(@RequestBody ActionRequest request) {
+        return gameService.processAction(request);
     }
 
 
