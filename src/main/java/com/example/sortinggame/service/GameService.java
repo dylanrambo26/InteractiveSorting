@@ -32,7 +32,7 @@ public class GameService {
                 Collections.swap(gameState.getArray(), actionRequest.getIndex1(), actionRequest.getIndex2());
             }
             else if(algorithm.equals("insertion_sort")){
-                insertIntoSorted(gameState, actionRequest.getIndex1());
+                insertIntoSorted(gameState, actionRequest.getIndex2());
             }
             System.out.println("After action: " + gameState.getArray());
             gameState.incrementSwaps();
