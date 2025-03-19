@@ -2,7 +2,7 @@ package com.example.sortinggame.controller;
 
 import com.example.sortinggame.model.GameState;
 import com.example.sortinggame.model.StartRequest;
-import com.example.sortinggame.model.SwapRequest;
+import com.example.sortinggame.model.ActionRequest;
 import com.example.sortinggame.service.GameService;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,7 +39,7 @@ public class GameController {
     // Processing a User Swap of Elements
     @CrossOrigin(origins = "http://localhost:63343") // Allow CORS from frontend's origin, testing in WebStorm
     @PostMapping("/swap")
-    public GameState processSwap(@RequestBody SwapRequest request) {
+    public GameState processSwap(@RequestBody ActionRequest request) {
         System.out.println("Reached Swap");
         return gameService.processSwap(request);
     }
