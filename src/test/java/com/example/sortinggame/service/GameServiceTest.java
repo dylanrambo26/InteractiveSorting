@@ -70,4 +70,50 @@ public class GameServiceTest {
             }
         }
     }
+
+    @Test
+    void testSelectionSortAlgorithm(){
+        gameService = new GameService();
+        StartRequest startRequest = new StartRequest("selection_sort", 5);
+        gameState = gameService.startGame(startRequest);
+        ActionRequest actionRequest;
+
+        List<Integer> expectedArray = new ArrayList<>(gameState.getArray());
+        int minIndex;
+        for(int pass = 0; pass  < gameState.getArray().size() - 1; pass ++){
+            minIndex = pass ;
+            for(int j = pass  + 1; j < gameState.getArray().size(); j++){
+                if(gameState.getArray().get(j) < gameState.getArray().get(minIndex)){
+                    minIndex = j;
+                }
+            }
+            actionRequest = new ActionRequest(1,pass,pass,minIndex);
+            gameState = gameService.processSwap(actionRequest);
+            Collections.swap(expectedArray, pass , minIndex);
+            assertEquals(gameState.getArray(), expectedArray);
+        }
+    }
+
+    @Test
+    void testInsertionSortAlgorithm(){
+        gameService = new GameService();
+        StartRequest startRequest = new StartRequest("insertion_sort",5);
+        gameState = gameService.startGame(startRequest);
+        ActionRequest actionRequest;
+
+        List<Integer> expectedArray = new ArrayList<>(gameState.getArray());
+        int n = gameState.getArray().size();
+        for(int nextElement = 1; nextElement < n; nextElement++){
+            int key = gameState.getArray().get(nextElement);
+            int j = nextElement - 1;
+            actionRequest = new ActionRequest(1,j,j,nextElement);
+            gameState = gameService.processSwap(actionRequest);
+            while (j >= 0 && expectedArray.get(j) > key) {
+                expectedArray.set(j + 1, expectedArray.get(j));
+                j = j - 1;
+            }
+            expectedArray.set(j + 1, key);
+            assertEquals(gameState.getArray(),expectedArray);
+        }
+    }
 }
