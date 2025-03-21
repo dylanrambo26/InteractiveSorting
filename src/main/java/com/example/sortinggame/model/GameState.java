@@ -1,4 +1,6 @@
 package com.example.sortinggame.model;
+import com.example.sortinggame.service.GameService;
+
 import java.util.*;
 
 public class GameState {
@@ -9,7 +11,8 @@ public class GameState {
     private final int gameId;
     private final String algorithm;
     private final List<Integer> array;
-    private List<List<Integer>> mergeSortSubarrays;
+    //private List<List<Integer>> mergeSortSubarrays;
+    private List<GameService.Partition> partitionList;
     private int swapCount;
     private boolean isSorted;
 
@@ -77,8 +80,12 @@ public class GameState {
     public int getNumPartitions(){
         return numPartitions;
     }
-    public List<List<Integer>> getMergeSortSubarrays(){
+    /*public List<List<Integer>> getMergeSortSubarrays(){
         return mergeSortSubarrays;
+    }*/
+
+    public List<GameService.Partition> getPartitionList(){
+        return partitionList;
     }
     //setters
     public void incrementSwaps() {
@@ -108,5 +115,8 @@ public class GameState {
     }
     public void setNumPartitions(int numPartitions){
         this.numPartitions = numPartitions;
+    }
+    public void setPartitionList(List<GameService.Partition> partitionList){
+        this.partitionList = partitionList;
     }
 }
