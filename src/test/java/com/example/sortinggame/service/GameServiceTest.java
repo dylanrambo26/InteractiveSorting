@@ -116,4 +116,12 @@ public class GameServiceTest {
             assertEquals(gameState.getArray(),expectedArray);
         }
     }
+
+    @Test
+    void testMergeSortPartitions(){
+        gameService = new GameService();
+        StartRequest startRequest = new StartRequest("merge_sort", 6);
+        gameState = gameService.startGame(startRequest);
+
+    }
 }
