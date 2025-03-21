@@ -2,6 +2,7 @@ package com.example.sortinggame.service;
 import com.example.sortinggame.model.GameState;
 import com.example.sortinggame.model.StartRequest;
 import com.example.sortinggame.model.ActionRequest;
+import jakarta.servlet.http.Part;
 import org.springframework.boot.autoconfigure.amqp.AbstractRabbitListenerContainerFactoryConfigurer;
 import org.springframework.stereotype.Service;
 import java.util.*;
@@ -10,13 +11,31 @@ import java.util.*;
 public class GameService {
     private final Map<Integer, GameState> games = new HashMap<>();
     private int gameIdCounter = 1;
+
+    public static class Partition{
+        private final int left;
+        private final int right;
+
+        public Partition(int left, int right){
+            this.left = left;
+            this.right = right;
+        }
+
+        public int getLeft(){
+            return left;
+        }
+        public int getRight(){
+            return right;
+        }
+    }
     public GameState startGame(StartRequest startRequest){
         List<Integer> array = generateShuffledArray(startRequest.getArraySize());
         GameState gameState = new GameState(gameIdCounter, startRequest.getAlgorithm(), array);
         //Merge sort partitioning before user actions
         if(startRequest.getAlgorithm().equals("merge_sort")){
             List<Integer> mergeArray = gameState.getArray();
-            mergeSortPartitions(mergeArray, gameState.getMergeSortSubarrays(), mergeArray.get(0), mergeArray.get(mergeArray.size() - 1), 1);
+            List<Partition> partitionList = mergeSortPartitionIndexes(new ArrayList<>(), 0, mergeArray.size() - 1);
+            gameState.setPartitionList(partitionList);
         }
         games.put(gameIdCounter, gameState);
         return games.get(gameIdCounter++);
@@ -76,17 +95,18 @@ public class GameService {
         array.set(j + 1, key);
     }
 
-    private void mergeSortPartitions(List<Integer> array, List<List<Integer>> subarrays, int left, int right, int divisionStep){
-        int numDivisions = divisionStep * 2;
+    //Tracks the indexes of each partition during the divide step of merge sort
+    private List<Partition> mergeSortPartitionIndexes(List<Partition> partitions, int left, int right){
         if(left < right){
+            partitions.add(new Partition(left, right));
             int midpoint = Math.floorDiv(left + right, 2);
-            List<Integer> leftArray = new ArrayList<>(array.subList(left,midpoint));
-            List<Integer> rightArray = new ArrayList<>(array.subList(midpoint + 1, right));
-            for(int i = 1; i < numDivisions; i++){
-                subarrays.set(i, rightArray);
-                subarrays.set(i - 1, leftArray);
-            }
+            mergeSortPartitionIndexes(partitions, left, midpoint);
+            mergeSortPartitionIndexes(partitions, midpoint + 1, right);
         }
+        else{
+            partitions.add(new Partition(left, right));
+        }
+        return partitions;
     }
     private boolean isSorted(List<Integer> arr){
         for(int i = 0; i < arr.size() - 1; i++){
