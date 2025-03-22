@@ -15,6 +15,10 @@ public class GameService {
     public static class Partition{
         private final int left;
         private final int right;
+        private Partition leftChild;
+        private Partition rightChild;
+        private Partition parent;
+
 
         public Partition(int left, int right){
             this.left = left;
@@ -27,14 +31,33 @@ public class GameService {
         public int getRight(){
             return right;
         }
+        public Partition getLeftChild(){
+            return leftChild;
+        }
+        public Partition getRightChild(){
+            return rightChild;
+        }
+        public void setLeftChild(Partition leftChild){
+            this.leftChild = leftChild;
+            if(leftChild != null){
+                leftChild.parent = this;
+            }
+        }
+        public void setRightChild(Partition rightChild){
+            this.rightChild = rightChild;
+            if(rightChild != null){
+                rightChild.parent = this;
+            }
+        }
     }
     public GameState startGame(StartRequest startRequest){
         List<Integer> array = generateShuffledArray(startRequest.getArraySize());
         GameState gameState = new GameState(gameIdCounter, startRequest.getAlgorithm(), array);
+
         //Merge sort partitioning before user actions
         if(startRequest.getAlgorithm().equals("merge_sort")){
             List<Integer> mergeArray = gameState.getArray();
-            List<Partition> partitionList = mergeSortPartitionIndexes(new ArrayList<>(), 0, mergeArray.size() - 1);
+            List<Partition> partitionList = listOfPartitions(new ArrayList<>(), 0, mergeArray.size() - 1);
             gameState.setPartitionList(partitionList);
         }
         games.put(gameIdCounter, gameState);
@@ -74,6 +97,7 @@ public class GameService {
         return gameState;
     }
 
+    //Returns a shuffled list of elements ready for the user to sort
     private List<Integer> generateShuffledArray(int size){
         List<Integer> shuffledArray = new ArrayList<>();
         for(int i = 1; i <= size; i++){
@@ -95,18 +119,32 @@ public class GameService {
         array.set(j + 1, key);
     }
 
-    //Tracks the indexes of each partition during the divide step of merge sort
-    private List<Partition> mergeSortPartitionIndexes(List<Partition> partitions, int left, int right){
-        if(left < right){
-            partitions.add(new Partition(left, right));
-            int midpoint = Math.floorDiv(left + right, 2);
-            mergeSortPartitionIndexes(partitions, left, midpoint);
-            mergeSortPartitionIndexes(partitions, midpoint + 1, right);
-        }
-        else{
-            partitions.add(new Partition(left, right));
-        }
+    //Returns the list of partitions of the array
+    private List<Partition> listOfPartitions(List<Partition> partitions, int left, int right){
+        mergeSortPartitionIndexes(partitions, left, right, null, false);
         return partitions;
+    }
+
+    //Tracks the indexes of each partition during the divide step of merge sort. Also tracks the parent and child partitions
+    //for display later.
+    private void mergeSortPartitionIndexes(List<Partition> partitions, int left, int right, Partition parent, boolean isLeftChild){
+        Partition currentPartition = new Partition(left, right);
+        partitions.add(currentPartition);
+
+        if(parent != null){
+            if(isLeftChild){
+                parent.setLeftChild(currentPartition);
+            }
+            else{
+                parent.setRightChild(currentPartition);
+            }
+        }
+
+        if(left < right){
+            int midpoint = Math.floorDiv(left + right, 2);
+            mergeSortPartitionIndexes(partitions, left, midpoint, currentPartition, true);
+            mergeSortPartitionIndexes(partitions, midpoint + 1, right, currentPartition, false);
+        }
     }
     private boolean isSorted(List<Integer> arr){
         for(int i = 0; i < arr.size() - 1; i++){
@@ -122,18 +160,4 @@ public class GameService {
         System.out.println(gameId + " is the gameID and array is" + gameState.getArray());
         return gameState;
     }
-
-    /*private void printList(List<Integer> list){
-        for(int i = 0; i < list.size(); i++){
-            System.out.println(list.get(i) + ",");
-        }
-    }*/
-
-    /*public static void main(String[] args){
-        int k = 5;
-        GameService obj = new GameService();
-
-        obj.printList(obj.generateRandomArray(k));
-    }*/
-
 }
