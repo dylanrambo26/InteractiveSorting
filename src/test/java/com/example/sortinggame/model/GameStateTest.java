@@ -6,10 +6,10 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GameStateTest {
-    /*@Test
+    @Test
     void testInitialGameState(){
         List<Integer> initialArray = Arrays.asList(5,3,4,1);
-        GameState gameState = new GameState(1,"BubbleSort", initialArray);
+        GameState gameState = new GameState("BubbleSort", initialArray);
         assertEquals(1, gameState.getGameId());
         assertEquals("BubbleSort", gameState.getAlgorithm());
         assertEquals(initialArray, gameState.getArray());
@@ -20,15 +20,15 @@ class GameStateTest {
 
     @Test
     void testIncrementSwaps(){
-        GameState gameState = new GameState(1,"BubbleSort", Arrays.asList(5,3,4,1));
+        GameState gameState = new GameState("BubbleSort", Arrays.asList(5,3,4,1));
         gameState.incrementSwaps();
         assertEquals(1, gameState.getSwapCount());
     }
 
     @Test
     void testPassTracking() {
-        GameState gameState = new GameState(1, "BubbleSort", Arrays.asList(5, 3, 4, 1));
+        GameState gameState = new GameState("BubbleSort", Arrays.asList(5, 3, 4, 1));
         gameState.setCurrentPass(1);
         assertEquals(1, gameState.getCurrentPass());
-    }*/
+    }
 }

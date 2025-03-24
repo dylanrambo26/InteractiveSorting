@@ -3,24 +3,34 @@ package com.example.sortinggame.service;
 import com.example.sortinggame.model.GameState;
 import com.example.sortinggame.model.StartRequest;
 import com.example.sortinggame.model.ActionRequest;
+import com.example.sortinggame.repository.GameStateRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import java.util.*;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class GameServiceTest {
-/*
+
+    @Autowired
+    private GameStateRepository repository;
+
+    @Autowired
     private GameService gameService;
     private GameState gameState;
 
     //Initializes the gameService and gameState for every test method
     @BeforeEach
     void setUp(){
-        gameService = new GameService();
         gameState = gameService.startGame(new StartRequest("bubble_sort", 5));
     }
 
@@ -39,18 +49,22 @@ public class GameServiceTest {
     @Test
     void testApplyValidSwap(){
         ActionRequest actionRequest = new ActionRequest(1, 0,0,1);
-        List<Integer> expectedArray = gameState.getArray();
+        List<Integer> expectedArray = new ArrayList<>(gameState.getArray());
         GameState updatedGameState = gameService.processAction(actionRequest);
         Collections.swap(expectedArray, actionRequest.getIndex1(), actionRequest.getIndex2());
-        assertEquals(expectedArray, updatedGameState.getArray());
+        assertEquals(expectedArray, new ArrayList<>(updatedGameState.getArray()));
     }
 
     //Tests multiple incorrect user swapRequests
     @ParameterizedTest
     @MethodSource("invalidSwapRequestStream")
     void testInvalidSwap(ActionRequest actionRequest){
-        GameState updatedGameState = gameService.processAction(actionRequest);
-        assertEquals(gameState.getArray(), updatedGameState.getArray());
+        GameService freshGameService = new GameService(repository);
+        GameState freshGameState = freshGameService.startGame(new StartRequest("bubble_sort",5));
+        List<Integer> expectedArray = new ArrayList<>(freshGameState.getArray());
+        actionRequest.setGameID(freshGameState.getGameId());
+        GameState updatedGameState = freshGameService.processAction(actionRequest);
+        assertEquals(expectedArray, updatedGameState.getArray());
     }
 
 
@@ -73,7 +87,6 @@ public class GameServiceTest {
 
     @Test
     void testSelectionSortAlgorithm(){
-        gameService = new GameService();
         StartRequest startRequest = new StartRequest("selection_sort", 5);
         gameState = gameService.startGame(startRequest);
         ActionRequest actionRequest;
@@ -96,7 +109,6 @@ public class GameServiceTest {
 
     @Test
     void testInsertionSortAlgorithm(){
-        gameService = new GameService();
         StartRequest startRequest = new StartRequest("insertion_sort",5);
         gameState = gameService.startGame(startRequest);
         ActionRequest actionRequest;
@@ -115,5 +127,5 @@ public class GameServiceTest {
             expectedArray.set(j + 1, key);
             assertEquals(gameState.getArray(),expectedArray);
         }
-    }*/
+    }
 }

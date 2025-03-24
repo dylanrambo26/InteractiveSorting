@@ -10,7 +10,7 @@ public class GameState {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int gameId;
     private String algorithm;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "game_state_array",
             joinColumns = @JoinColumn(name = "game_id")
