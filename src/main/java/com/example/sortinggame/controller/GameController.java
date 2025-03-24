@@ -18,7 +18,7 @@ public class GameController {
     }
 
     //Starts the game, initializing the gameState for the user.
-
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/start")
     public GameState startNewGame(@RequestBody StartRequest request){
         System.out.println("Reached");
@@ -27,7 +27,7 @@ public class GameController {
     }
 
     // Processing a User Action on the elements on the unsorted array.
-
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/action")
     public GameState processAction(@RequestBody ActionRequest request) {
         System.out.println("Reached Swap");
