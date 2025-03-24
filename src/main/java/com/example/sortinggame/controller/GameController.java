@@ -12,23 +12,13 @@ public class GameController {
     //GameService instance for executing game logic
     private final GameService gameService;
 
-
+    //Constructor initializes gameService
     public GameController(GameService gameService){
         this.gameService = gameService;
     }
 
-    /*@GetMapping("/")
-    public String getGameInfo() {
-        return "Game endpoint is working!";
-    }
+    //Starts the game, initializing the gameState for the user.
 
-    //Starting a New Game
-    /*@PostMapping("/start")
-    public GameState startNewGame(@RequestParam String algorithm){
-        return gameService.startGame(algorithm);
-    }*/
-
-    @CrossOrigin(origins = "http://localhost:63343") // Allow CORS from frontend's origin, testing in WebStorm, host on node.js later
     @PostMapping("/start")
     public GameState startNewGame(@RequestBody StartRequest request){
         System.out.println("Reached");
@@ -36,12 +26,12 @@ public class GameController {
 
     }
 
-    // Processing a User Swap of Elements
-    @CrossOrigin(origins = "http://localhost:63343") // Allow CORS from frontend's origin, testing in WebStorm
-    @PostMapping("/swap")
-    public GameState processSwap(@RequestBody ActionRequest request) {
+    // Processing a User Action on the elements on the unsorted array.
+
+    @PostMapping("/action")
+    public GameState processAction(@RequestBody ActionRequest request) {
         System.out.println("Reached Swap");
-        return gameService.processSwap(request);
+        return gameService.processAction(request);
     }
 
 
