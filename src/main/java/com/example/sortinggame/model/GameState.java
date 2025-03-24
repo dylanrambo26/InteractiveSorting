@@ -1,32 +1,38 @@
 package com.example.sortinggame.model;
+import jakarta.persistence.*;
+
 import java.util.*;
 
+@Entity
 public class GameState {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int gameId;
+    private String algorithm;
+    @ElementCollection
+    @CollectionTable(
+            name = "game_state_array",
+            joinColumns = @JoinColumn(name = "game_id")
+    )
+    @Column(name = "array_value")
+    private List<Integer> array = new ArrayList<>();
     private boolean isInvalidSwap;
     private boolean isInvalidPass;
     private String message;
-    private final int gameId;
-    private final String algorithm;
-    private final List<Integer> array;
-    private int swapCount;
+    private int swapCount = 0;
     private boolean isSorted;
-
-    private int lastSwappedIndex = -1;
-
     private boolean isNewPass = true;
-
     private int currentPass = 0;
     private boolean isFirstSwap = true;
 
     private int numInserts = 0;
 
-    public GameState(int gameId, String algorithm, List<Integer> array){
-        this.gameId = gameId;
+    //Default Constructor for JPA
+    public GameState(){}
+    public GameState(String algorithm, List<Integer> array){
         this.algorithm = algorithm;
         this.array = array;
-        this.swapCount = 0;
-        this.isSorted = false;
         this.message = "Select two indexes to get started";
     }
 
@@ -79,9 +85,9 @@ public class GameState {
     public void setSorted(boolean sorted) {
         this.isSorted = sorted;
     }
-    public void setLastSwappedIndex(int index){
+    /*public void setLastSwappedIndex(int index){
         this.lastSwappedIndex = index;
-    }
+    }*/
     public void setNewPass(boolean newPass){
         this.isNewPass = newPass;
     }
