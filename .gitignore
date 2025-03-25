@@ -1,18 +1,14 @@
-### === BACKEND (Java + Maven) ===
-backend/HELP.md
-target/
+# === Java / Maven (Backend) ===
 *.class
-
+*.log
+*.iml
+target/
+build/
 .mvn/
 !mvn/wrapper/maven-wrapper.jar
-
-.DS_Store
-Thumbs.db
-
-*.log
 hs_err_pid*
 
-### STS ###
+# === Spring Tool Suite ===
 .apt_generated
 .classpath
 .factorypath
@@ -21,53 +17,33 @@ hs_err_pid*
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
-.idea
+# === IntelliJ IDEA ===
+.idea/
 *.iws
-*.iml
 *.ipr
 
-### NetBeans ###
+# === NetBeans ===
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
 
-### VS Code ###
+# === VS Code ===
 .vscode/
 
-
-
-### === FRONTEND (HTML/CSS/JS created in WebStorm) ===
-
-# WebStorm project files
+# === Frontend (Node, WebStorm) ===
+frontend/node_modules/
 frontend/.idea/
-
-# VS Code (in case you switch editors)
 frontend/.vscode/
-
-# Potential frontend build outputs
 frontend/dist/
 frontend/build/
-
-# Node package directories (if you add npm later)
-**/node_modules/
 frontend/package-lock.json
-frontend/yarn.lock
-
-# Log files
 frontend/npm-debug.log*
 frontend/yarn-debug.log*
 frontend/yarn-error.log*
 
-# System files
-frontend/Thumbs.db
-frontend/.DS_Store
+# === OS / System Files ===
+.DS_Store
+Thumbs.db
 
-/sorting-game backend/
-/sorting-game frontend/
-/frontend/node_modules/
