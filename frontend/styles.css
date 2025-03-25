@@ -1,0 +1,26 @@
+body {
+    font-family: "Courier New", sans-serif;
+    text-align: center;
+}
+button {
+    padding: 10px;
+    margin: 10px;
+    cursor: pointer;
+}
+input {
+    width: 75px;
+    text-align: center;
+}
+#partitionDisplay {
+    font-family: monospace;   /* Ensures characters line up properly */
+    white-space: pre;         /* Preserve spaces and line breaks exactly */
+    line-height: 1.2;         /* Adjust spacing between lines */
+    border: 1px solid #ccc;   /* Optional border to make the tree area distinct */
+    padding: 10px;
+    background-color: #f9f9f9; /* Light background for readability */
+}
+
+#partitionDisplay pre {
+    margin: 0;  /* Remove default margin so lines stay tight */
+}
+
