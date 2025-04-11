@@ -43,6 +43,32 @@ frontend/npm-debug.log*
 frontend/yarn-debug.log*
 frontend/yarn-error.log*
 
+# === FRONTEND - React ===
+/frontend/node_modules
+/frontend/.pnp
+/frontend/.pnp.js
+
+# React test coverage
+/frontend/coverage
+
+# React build output
+/frontend/build
+
+# React environment files
+/frontend/.env.local
+/frontend/.env.development.local
+/frontend/.env.test.local
+/frontend/.env.production.local
+
+# React log files
+/frontend/npm-debug.log*
+/frontend/yarn-debug.log*
+/frontend/yarn-error.log*
+
+# React misc
+/frontend/.DS_Store
+
+
 # === OS / System Files ===
 .DS_Store
 Thumbs.db
