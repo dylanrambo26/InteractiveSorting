@@ -1,4 +1,5 @@
 package com.example.sortinggame.model;
+import com.example.sortinggame.service.GameService;
 import jakarta.persistence.*;
 
 import java.util.*;
@@ -17,6 +18,9 @@ public class GameState {
     )
     @Column(name = "array_value")
     private List<Integer> array = new ArrayList<>();
+
+    @Transient
+    private List<GameService.Partition> partitionList;
     private boolean isInvalidSwap;
     private boolean isInvalidPass;
     private String message;
@@ -27,6 +31,8 @@ public class GameState {
     private boolean isFirstSwap = true;
 
     private int numInserts = 0;
+
+    private int numPartitions;
 
     //Default Constructor for JPA
     public GameState(){}
@@ -77,6 +83,14 @@ public class GameState {
     public int getNumInserts(){
         return numInserts;
     }
+
+    public int getNumPartitions(){
+        return numPartitions;
+    }
+
+    public List<GameService.Partition> getPartitionList(){
+        return partitionList;
+    }
     //setters
     public void incrementSwaps() {
         this.swapCount++;
@@ -102,5 +116,12 @@ public class GameState {
     }
     public void setNumInserts(int numInserts){
         this.numInserts = numInserts;
+    }
+
+    public void setNumPartitions(int numPartitions){
+        this.numPartitions = numPartitions;
+    }
+    public void setPartitionList(List<GameService.Partition> partitionList){
+        this.partitionList = partitionList;
     }
 }

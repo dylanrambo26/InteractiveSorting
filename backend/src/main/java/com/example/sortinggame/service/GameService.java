@@ -15,21 +15,65 @@ public class GameService {
         this.repository = repository;
     }
 
-    //private final Map<Integer, GameState> games = new HashMap<>(); //Maps a game state to a game id so that each game is unique.
-    //private int gameIdCounter = 1; //Keeps track of the current gameID value to associate with a game state
+    public static class Partition{
+        private final int left;
+        private final int right;
+        private Partition leftChild;
+        private Partition rightChild;
+        private Partition parent;
+
+
+        public Partition(int left, int right){
+            this.left = left;
+            this.right = right;
+        }
+
+        public int getLeft(){
+            return left;
+        }
+        public int getRight(){
+            return right;
+        }
+        public Partition getLeftChild(){
+            return leftChild;
+        }
+        public Partition getRightChild(){
+            return rightChild;
+        }
+        public void setLeftChild(Partition leftChild){
+            this.leftChild = leftChild;
+            if(leftChild != null){
+                leftChild.parent = this;
+            }
+        }
+        public void setRightChild(Partition rightChild){
+            this.rightChild = rightChild;
+            if(rightChild != null){
+                rightChild.parent = this;
+            }
+        }
+    }
 
     //Starts the game with a shuffled array for the user to sort. Initializes game state with the current gameID.
     public GameState startGame(StartRequest startRequest){
         List<Integer> array = generateShuffledArray(startRequest.getArraySize());
         GameState gameState = new GameState(startRequest.getAlgorithm(), array);
-        //games.put(gameIdCounter, gameState);
+
+
+        //Merge sort partitioning before user actions
+        if(startRequest.getAlgorithm().equals("merge_sort")){
+            List<Integer> mergeArray = gameState.getArray();
+            List<Partition> partitionList = listOfPartitions(new ArrayList<>(), 0, mergeArray.size() - 1);
+            gameState.setPartitionList(partitionList);
+        }
+
         return repository.save(gameState);
     }
 
     /*Given an actionRequest with several arguments, process the action to validate the action or not according
     to the selected sorting algorithm.*/
     public GameState processAction(ActionRequest actionRequest){
-        //GameState gameState = games.get(actionRequest.getGameID());
+        //TODO Add merge sort validation
         Optional<GameState> optional = repository.findById(actionRequest.getGameID());
         if (optional.isEmpty()){
             return null;
@@ -79,6 +123,34 @@ public class GameService {
             j = j - 1;
         }
         array.set(j + 1, key);
+    }
+
+    //Returns the list of partitions of the array
+    private List<Partition> listOfPartitions(List<Partition> partitions, int left, int right){
+        mergeSortPartitionIndexes(partitions, left, right, null, false);
+        return partitions;
+    }
+
+    //Tracks the indexes of each partition during the divide step of merge sort. Also tracks the parent and child partitions
+    //for display later.
+    private void mergeSortPartitionIndexes(List<Partition> partitions, int left, int right, Partition parent, boolean isLeftChild){
+        Partition currentPartition = new Partition(left, right);
+        partitions.add(currentPartition);
+
+        if(parent != null){
+            if(isLeftChild){
+                parent.setLeftChild(currentPartition);
+            }
+            else{
+                parent.setRightChild(currentPartition);
+            }
+        }
+
+        if(left < right){
+            int midpoint = Math.floorDiv(left + right, 2);
+            mergeSortPartitionIndexes(partitions, left, midpoint, currentPartition, true);
+            mergeSortPartitionIndexes(partitions, midpoint + 1, right, currentPartition, false);
+        }
     }
 
     //Checks if the array is in ascending sorted order.

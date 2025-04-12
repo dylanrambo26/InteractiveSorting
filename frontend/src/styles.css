@@ -24,3 +24,13 @@ input {
     margin: 0;  /* Remove default margin so lines stay tight */
 }
 
+.array-box {
+    display: inline-block;
+    margin: 5px;
+    padding: 10px 15px;
+    border-radius: 6px;
+    background-color: #dceeff;
+    font-size: 18px;
+    border: 1px solid #007acc;
+}
+

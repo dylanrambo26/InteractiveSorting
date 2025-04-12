@@ -1,10 +1,9 @@
 .tree ul {
+    display: flex;               /* Align child nodes in a row */
+    justify-content: center;     /* Center the children under the parent */
     padding-top: 20px;
     position: relative;
-    transition: all 0.5s;
-    -webkit-transition: all 0.5s;
-    -moz-transition: all 0.5s;
-    list-style-type: none; /* Remove bullets */
+    list-style-type: none;
     margin: 0;
     padding-left: 0;
 }
@@ -12,44 +11,50 @@
 .tree li {
     text-align: center;
     position: relative;
-    display: inline-block; /* Keep nodes side by side */
-    vertical-align: top;
+    display: inline-block;
     padding: 20px 5px 0 5px;
+    vertical-align: top;
 }
 
+/* Connectors between parent and children */
 .tree li::before, .tree li::after {
     content: '';
     position: absolute;
     top: 0;
-    right: 50%;
-    border-top: 1px solid #ccc;
     width: 50%;
     height: 20px;
+    border-top: 1px solid #ccc;
+}
+
+.tree li::before {
+    right: 50%;
+    border-right: 1px solid #ccc;
 }
 
 .tree li::after {
-    right: auto;
     left: 50%;
     border-left: 1px solid #ccc;
 }
 
-/* Remove connectors for a node without siblings */
+/* Remove lines if there's only one child */
 .tree li:only-child::before,
 .tree li:only-child::after {
     display: none;
 }
 
-/* Remove right connector for the first child */
+/* Remove line to previous sibling */
 .tree li:first-child::before {
-    border: 0 none;
+    border: none;
 }
 
-/* Remove left connector for the last child */
+/* Remove line to next sibling */
 .tree li:last-child::after {
-    border: 0 none;
+    border: none;
 }
 
 .tree li .node {
+    position: relative;
+    top: 20px; /* Move node below the branch lines */
     border: 1px solid #ccc;
     padding: 5px 10px;
     text-decoration: none;
@@ -58,10 +63,10 @@
     display: inline-block;
     border-radius: 5px;
     background: #fff;
-    position: relative;
 }
 
 .tree li .node:hover {
     background: #c8e4f8;
     border: 1px solid #94a0b4;
 }
+
