@@ -54,12 +54,23 @@ InteractiveSort/
 │           └── resources/
 │               ├── application.properties
 ├── frontend/
-│   ├── index.html
-│   ├── script.js
-│   ├── styles.css          
-│   ├── tree.css            # tree styling for merge sort
-│   ├── package.json        # (if using npm)
-│   └── node_modules/       # (ignored by Git)
+│   ├── public
+│   ├── src/             #React frontend
+        ├── components/  #React Components
+            ├── ActionPanel.jsx
+            ├── ArrayDisplay.jsx
+            ├── GameSetup.jsx
+        ├── App.css
+        ├── App.js
+        ├── App.test.js
+        ├── index.css
+        ├── index.js
+        ├── logo.svg
+        ├── reportWebVitals.js
+        ├── setupTests.js
+        ├── styles.css
+        ├── tree.css        # Tree struture for merge sort 
+    └── package.json        # (if using npm)
 ├── .gitignore
 ├── .gitattributes
 └── README.md
